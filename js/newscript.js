@@ -39,6 +39,40 @@ function openPage(pageName,elmnt,color) {
             ease: "power1.in", // 缓动函数
             });
         });
+
+             // 当鼠标离开 .tablink 时
+             tablink.addEventListener("mouseout", function() {
+              gsap.to(this, { 
+                  duration: 0.2, // 动画持续时间
+                  scale: 1, // 回到原来的位置
+                  transformOrigin: "center bottom",
+                  ease: "power1.in", // 缓动函数
+                  });
+              });
+      
+              var BookOpens = document.getElementsByClassName("HM_book");
+      
+              for (var i = 0; i < BookOpens.length; i++) {
+                var BookOpen = BookOpens[i];
+              
+              BookOpen.addEventListener("mouseover", function() {
+                  gsap.to(this, {
+                      duration: 0.2,
+                      scale: 1.1,
+                      transformOrigin: "center bottom",
+                      ease: "power1.out",
+                  });
+              });
+      
+              BookOpen.addEventListener("mouseout", function() {
+                gsap.to(this, {
+                    duration: 0.2,
+                    scale: 1,
+                    transformOrigin: "center bottom",
+                    ease: "power1.out",
+                });
+            });
+            }
         
 });
 

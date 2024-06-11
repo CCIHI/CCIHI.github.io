@@ -39,7 +39,30 @@ function openPage(pageName,elmnt,color) {
             ease: "power1.in", // 缓动函数
             });
         });
+
+        var BookOpens = document.getElementsByClassName("HM_book");
+
+        for (var i = 0; i < BookOpens.length; i++) {
+          var BookOpen = BookOpens[i];
         
+        BookOpen.addEventListener("mouseover", function() {
+            gsap.to(this, {
+                duration: 0.2,
+                scale: 1.1,
+                transformOrigin: "center bottom",
+                ease: "power1.out",
+            });
+        });
+
+        BookOpen.addEventListener("mouseout", function() {
+          gsap.to(this, {
+              duration: 0.2,
+              scale: 1,
+              transformOrigin: "center bottom",
+              ease: "power1.out",
+          });
+      });
+      }
 });
 
 function showDescription(id) {
@@ -51,6 +74,20 @@ function showDescription(id) {
 
   // 顯示傳遞的 id 對應的書的介紹
   document.getElementById(id).style.display = 'block';
+
+  var animation = gsap.fromTo(".book-description", {
+    opacity: 0, // 開始時的透明度
+  }, {
+    opacity: 1, // 結束時的透明度
+    duration: 1, // 動畫持續時間
+    ease: "power1.out", // 緩動函數
+  });
+
+  // 為 clickableElement 添加 click 事件監聽器
+  descriptions.addEventListener("click", function() {
+      // 播放動畫
+      animation.play();
+  });
 }
     
 function myFunction() {
@@ -67,7 +104,9 @@ function myFunction() {
       btnText.innerHTML = "Read less";
       moreText.style.display = "inline";
     }
+
   }
+
 
   window.onload = function() {
     var container = document.querySelector('.overflow-auto');
@@ -80,4 +119,5 @@ function myFunction() {
     });
 
     showDescription('description-book1');
+
 }
