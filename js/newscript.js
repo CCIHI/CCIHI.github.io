@@ -80,4 +80,5 @@ function myFunction() {
     });
 
     showDescription('description-book1');
+    openPage('COMPUTERVISION', document.querySelector('.tablink'), 'red');
 }
