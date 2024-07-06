@@ -1,123 +1,107 @@
-function openPage(pageName,elmnt,color) {
-    var i, tabcontent, tablinks;
-        tabcontent = document.getElementsByClassName("tabcontent");
-          for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-          }
+document.addEventListener('DOMContentLoaded', () => {
 
-          // Remove the background color of all tablinks/buttons
-        tablinks = document.getElementsByClassName("tablink");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].style.backgroundColor = "";
+    gsap.fromTo(".loading-animation", {
+        x: '100vw' 
+    }, {
+        x: '-32vw', 
+        rotation: -720,
+        duration: 2, 
+        ease: "power2.out", 
+        onComplete: () => {
+            gsap.to("#loading-wrapper", {
+                duration: 0.2, 
+                opacity: 0,
+                display: "none"
+            });
         }
-
-          document.querySelector('article').style.display = 'none';
-          document.getElementById(pageName).style.display = "block";
-            elmnt.style.backgroundColor = color;
-        }
-        // 获取所有的 .tablink 元素
-        var tablinks = document.querySelectorAll(".tablink");
-
-        // 对每个 .tablink 元素进行操作
-        tablinks.forEach(function(tablink) {
-        // 当鼠标悬停在 .tablink 上时
-        tablink.addEventListener("mouseover", function() {
-        gsap.to(this, { 
-            duration: 0.2, // 动画持续时间
-            scale: 1.1, // 向上移动的距离
-            transformOrigin: "center bottom",
-            ease: "power1.out", // 缓动函数
-            });
-        });
-
-        // 当鼠标离开 .tablink 时
-        tablink.addEventListener("mouseout", function() {
-        gsap.to(this, { 
-            duration: 0.2, // 动画持续时间
-            scale: 1, // 回到原来的位置
-            transformOrigin: "center bottom",
-            ease: "power1.in", // 缓动函数
-            });
-        });
-
-        var BookOpens = document.getElementsByClassName("HM_book");
-
-        for (var i = 0; i < BookOpens.length; i++) {
-          var BookOpen = BookOpens[i];
-        
-        BookOpen.addEventListener("mouseover", function() {
-            gsap.to(this, {
-                duration: 0.2,
-                scale: 1.1,
-                transformOrigin: "center bottom",
-                ease: "power1.out",
-            });
-        });
-
-        BookOpen.addEventListener("mouseout", function() {
-          gsap.to(this, {
-              duration: 0.2,
-              scale: 1,
-              transformOrigin: "center bottom",
-              ease: "power1.out",
-          });
-      });
-      }
+    });
 });
 
-function showDescription(id) {
-  // 隱藏所有書的介紹
-  var descriptions = document.getElementsByClassName('book-description');
-  for (var i = 0; i < descriptions.length; i++) {
-      descriptions[i].style.display = 'none';
-  }
+let currentIndex = 0; // 当前显示图片的索引
+const slides = document.querySelectorAll('.CCIH .slide'); // 获取所有的轮播图片
+const totalSlides = slides.length; // 轮播图片总数
 
-  // 顯示傳遞的 id 對應的書的介紹
-  document.getElementById(id).style.display = 'block';
-
-  var animation = gsap.fromTo(".book-description", {
-    opacity: 0, // 開始時的透明度
-  }, {
-    opacity: 1, // 結束時的透明度
-    duration: 1, // 動畫持續時間
-    ease: "power1.out", // 緩動函數
-  });
-
-  // 為 clickableElement 添加 click 事件監聽器
-  descriptions.addEventListener("click", function() {
-      // 播放動畫
-      animation.play();
-  });
+function showNextSlide() {
+    // 隐藏当前图片
+    slides[currentIndex].style.display = 'none';
+    // 计算下一张图片的索引
+    currentIndex = (currentIndex + 1) % totalSlides;
+    // 显示下一张图片
+    slides[currentIndex].style.display = 'block';
 }
-    
-function myFunction() {
-    var dots = document.getElementById("dots");
-    var moreText = document.getElementById("more");
-    var btnText = document.getElementById("myBtn");
-  
-    if (dots.style.display === "none") {
-      dots.style.display = "inline";
-      btnText.innerHTML = "Read more";
-      moreText.style.display = "none";
-    } else {
-      dots.style.display = "none";
-      btnText.innerHTML = "Read less";
-      moreText.style.display = "inline";
-    }
 
-  }
+// 设置定时器，每0.5秒切换一次图片
+setInterval(showNextSlide, 500);
 
-
-  window.onload = function() {
-    var container = document.querySelector('.overflow-auto');
-
-    container.addEventListener('wheel', function(e) {
-        if (e.deltaY != 0) {
-            container.scrollLeft += e.deltaY;
-            e.preventDefault();
+document.querySelectorAll('a.link').forEach(link => {
+    // 鼠标悬停事件
+    link.addEventListener('mouseover', () => {
+        // 隐藏当前链接内的Or图片
+        const orImage = link.querySelector('.Or');
+        if (orImage) {
+            orImage.style.display = 'none';
+        }
+        // 显示对应的ho图片
+        const hoImage = link.querySelector('.ho');
+        if (hoImage) {
+            hoImage.style.display = 'block';
         }
     });
 
-    showDescription('description-book1');
+    // 鼠标移开事件
+    link.addEventListener('mouseout', () => {
+        // 显示Or图片
+        const orImage = link.querySelector('.Or');
+        if (orImage) {
+            orImage.style.display = 'block';
+        }
+        // 隐藏ho图片
+        const hoImage = link.querySelector('.ho');
+        if (hoImage) {
+            hoImage.style.display = 'none';
+        }
+    });
+});
 
+document.querySelector('body').addEventListener('mousemove', (e) => {
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
+
+    const logo = document.getElementById('anchor');
+    const rekt = logo.getBoundingClientRect();
+    const logoCenterX = rekt.left + rekt.width / 3;
+    const logoCenterY = rekt.top + rekt.height / 3;
+
+    let offsetX = mouseX - logoCenterX;
+    let offsetY = mouseY - logoCenterY;
+
+    const maxOffsetX = rekt.width / 1;
+    const maxOffsetY = rekt.height / 1;
+
+    offsetX = Math.max(-maxOffsetX, Math.min(maxOffsetX, offsetX));
+    offsetY = Math.max(-maxOffsetY, Math.min(maxOffsetY, offsetY));
+
+    const eye = document.querySelectorAll('.logo_eye');
+    eye.forEach(eye => {
+        // 计算eye相对于其父元素的偏移量，而不是基于页面的绝对位置
+        const eyeOffsetX = offsetX * 0.1; // 调整这个值以改变眼睛的移动幅度
+        const eyeOffsetY = offsetY * 0.1; // 调整这个值以改变眼睛的移动幅度
+
+        // 更新eye的位置，基于原始位置进行偏移
+        eye.style.transform = `translate(${eyeOffsetX}px, ${eyeOffsetY}px)`;
+    });
+});
+
+/*
+function logoeye(event) {
+    const eye = document.querySelectorAll('.logo_eye');
+    eye.forEach(function(eye) {
+        let x = (eye.getBoundingClientRect().left) + (eye.clientWidth / 2);
+        let y = (eye.getBoundingClientRect().top) + (eye.clientHeight / 2);
+
+        let radian = Math.atan2(event.pageX - x, event.pageY - y);
+        let rotation = (radian * (180 / Math.PI) * -1) + 270;
+        eye.style.transform = "rotate(" + rotation + "deg)";
+    });
 }
+*/
